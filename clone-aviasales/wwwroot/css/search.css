@@ -1,0 +1,32 @@
+body {
+	background: #eff1f4;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.header {
+	background: #0c73fe;
+}
+
+.main, .not-found {
+	padding: 50px;
+}
+
+.rounded-15 {
+	border-radius: 1.5rem !important;
+}
+
+.aero-filter-img {
+	width: 36px;
+	height: 36px;
+}
+
+.not-found .card {
+	padding: 80px 95px;
+}
+
+.not-found__image {
+	background-image: url(https://www.aviasales.by/helios-assets/good-news-64ddf089577281b71628..svg);
+	background-repeat: no-repeat;
+	width: 100px;
+	height: 100px;
+}

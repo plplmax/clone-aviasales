@@ -1,10 +1,32 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "А сколько стоит твой билет? Начни экономить на перелётах!";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="not-found">
+    <div class="container d-flex">
+        <div class="card border-light rounded-15 m-auto">
+            <div class="card-body text-center">
+                <div class="not-found__image mx-auto mb-5"></div>
+                <div class="not-found__title mb-4">
+                    <h3 class="fs-3 fw-bold">Поиск дешёвых авиабилетов</h3>
+                </div>
+                <div class="not-found__description">
+                    <p class="mb-2">Выберите направление, даты и нажмите кнопку «Найти».</p>
+                    <p>Мы покажем вам лучшие цены.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+		$('#twidget').twidget({
+			locale: 'ru',
+			marker: 78606,
+			type: 'avia'
+		});
+    </script>
+}
