@@ -15,9 +15,13 @@ body {
 	border-radius: 1.5rem !important;
 }
 
-.aero-filter-img {
+.custom-img {
 	width: 36px;
 	height: 36px;
+}
+
+.flex-basis-100 {
+	flex-basis: 100%;
 }
 
 .not-found .card {
