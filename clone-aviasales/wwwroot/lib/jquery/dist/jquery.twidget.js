@@ -859,7 +859,7 @@
             '                    <a href="' + _this.settings.localization.avia_logo_link + '?marker=' + _this.settings.marker + '" class="twidget-title">'+_this.settings.localization.avia_logo_caption+'</a>'+
             '                </div>'+
             '                <div class="clearfix"></div>'+
-            '                <form action="' + _this.settings.localization.avia_submit_domain + '" method="get" autocomplete="off" ' + (_this.settings.open_in_new_tab ? 'target="_blank"' : '') + '>'+
+            '                <form id="search-form" autocomplete="off" >'+
             '                    <ul class="twidget-form-list clearfix">'+
             '                        <!-- origin input -->'+
             '                        <li class="twidget-origin">'+
@@ -894,7 +894,7 @@
             '                            <div class="twidget-dep-date twidget-form-item">'+
             '                                <div class="twidget-input-box">'+
             '                                    <label for="twidget-origin">'+_this.settings.localization.avia_input_date_start+'</label>'+
-            '                                    <input type="text" name="depart_date" placeholder="'+_this.settings.localization.avia_input_date_start+'" required value="'+dateOneWeekLater.getFullYear()+'-'+(dateOneWeekLater.getMonth()+1)+'-'+dateOneWeekLater.getDate()+'">'+
+            '                                    <input type="text" name="depart_date" placeholder="'+_this.settings.localization.avia_input_date_start+'" required value="'+dateOneWeekLater.getFullYear()+'-'+("0" + (dateOneWeekLater.getMonth()+1)).slice(-2)+'-'+("0" + dateOneWeekLater.getDate()).slice(-2)+'">'+
             '                                    <div class="twidget-icon-cal"></div>'+
             '                                    <span class="twidget-date-text twidget-date-depart"></span>'+
             '                                </div>'+
@@ -902,7 +902,7 @@
             '                            <div class="twidget-return-date twidget-form-item">'+
             '                                <div class="twidget-input-box">'+
             '                                    <label for="twidget-origin">'+_this.settings.localization.avia_input_date_end+'</label>'+
-            '                                    <input type="text" name="return_date" placeholder="'+_this.settings.localization.avia_input_date_end+'" value="'+dateTwoWeekLater.getFullYear()+'-'+(dateTwoWeekLater.getMonth()+1)+'-'+dateTwoWeekLater.getDate()+'">'+
+                '                                    <input type="text" name="return_date" placeholder="' + _this.settings.localization.avia_input_date_end + '" value="' + dateTwoWeekLater.getFullYear() + '-' + ("0" + (dateTwoWeekLater.getMonth() + 1)).slice(-2) + '-' +("0" + dateTwoWeekLater.getDate()).slice(-2)+'">'+
             '                                    <div class="twidget-icon-cal""></div>'+
             '                                    <div class="twidget-icon-delete" style="display: none;"></div>'+
             '                                    <span class="twidget-date-text twidget-date-return"></span>'+
@@ -960,7 +960,9 @@
             '                        <!-- partner marker -->'+
             '                        <input type="hidden" name="marker" value="11111">'+
             '                        <!-- with_request flag -->'+
-            '                        <input type="hidden" name="with_request" value="1">'+
+            '                        <input type="hidden" name="with_request" value="1">' +
+            '                        <!-- currency -->' +
+            '                        <input type="hidden" name="currency" value="byn">' +
             '                        <!-- submit button -->'+
             '                        <li class="twidget-submit-button">'+
             '                            <button type="submit">'+_this.settings.localization.avia_submit_button_text+'</button>'+
