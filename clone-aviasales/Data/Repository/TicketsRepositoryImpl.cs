@@ -1,4 +1,6 @@
 ﻿using clone_aviasales.Data.Source;
+using clone_aviasales.Domain.Model;
+using clone_aviasales.Domain.Repository;
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;

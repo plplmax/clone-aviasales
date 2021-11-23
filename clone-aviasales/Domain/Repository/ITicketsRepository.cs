@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using clone_aviasales.Domain.Model;
+using System.Threading.Tasks;
 
-namespace clone_aviasales.Data.Repository
+namespace clone_aviasales.Domain.Repository
 {
     public interface ITicketsRepository
     {

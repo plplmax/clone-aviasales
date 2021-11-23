@@ -1,4 +1,6 @@
 ﻿using clone_aviasales.Data.Source;
+using clone_aviasales.Domain.Model;
+using clone_aviasales.Domain.Repository;
 using System.Collections.Generic;
 
 namespace clone_aviasales.Data.Repository

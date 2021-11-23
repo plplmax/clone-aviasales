@@ -1,5 +1,5 @@
-﻿using clone_aviasales.Data;
-using clone_aviasales.Data.Repository;
+﻿using clone_aviasales.Domain.Model;
+using clone_aviasales.Domain.Repository;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

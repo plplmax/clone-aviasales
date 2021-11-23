@@ -1,4 +1,4 @@
-﻿namespace clone_aviasales.Data
+﻿namespace clone_aviasales.Domain.Model
 {
     public class FetchTicketsParams
     {

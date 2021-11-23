@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Text.Json.Serialization;
 
-namespace clone_aviasales.Data
+namespace clone_aviasales.Domain.Model
 {
     [BindRequired]
     public class TicketRequest

@@ -1,5 +1,5 @@
-﻿using clone_aviasales.Data;
-using clone_aviasales.Domain.Interactors;
+﻿using clone_aviasales.Domain.Interactors;
+using clone_aviasales.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 

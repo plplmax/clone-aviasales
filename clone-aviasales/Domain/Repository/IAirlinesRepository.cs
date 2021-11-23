@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using clone_aviasales.Domain.Model;
+using System.Collections.Generic;
 
-namespace clone_aviasales.Data.Repository
+namespace clone_aviasales.Domain.Repository
 {
     public interface IAirlinesRepository
     {

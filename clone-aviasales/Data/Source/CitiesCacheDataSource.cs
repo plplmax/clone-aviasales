@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using clone_aviasales.Domain.Model;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 
