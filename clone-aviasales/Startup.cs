@@ -1,6 +1,7 @@
 using clone_aviasales.Data.Repository;
 using clone_aviasales.Data.Source;
 using clone_aviasales.Domain.Interactors;
+using clone_aviasales.Domain.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
