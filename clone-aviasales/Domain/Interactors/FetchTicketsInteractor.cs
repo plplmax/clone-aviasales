@@ -21,16 +21,18 @@ namespace clone_aviasales.Domain.Interactors
 
         public async Task<TicketsResponse> Execute(TicketRequest request)
         {
-            TicketsResponse responseWithoutCities = await ticketsRepository.FetchTickets(request);
-            IEnumerable<string> cities = responseWithoutCities.Data.SelectMany(ticket => new string[] { ticket.Origin, ticket.Destination });
-            ISet<string> citiesForFind = new HashSet<string>(cities);
-            IDictionary<string, City> findedCities = citiesRepository.FindCities(citiesForFind);
-            responseWithoutCities.Cities = findedCities;
-            IEnumerable<string> airlines = responseWithoutCities.Data.Select(ticket => ticket.Airline);
-            ISet<string> airlinesForFind = new HashSet<string>(airlines);
-            IDictionary<string, Airline> findedAirlines = airlinesRepository.FindAirlines(airlinesForFind);
-            responseWithoutCities.Airlines = findedAirlines;
-            return responseWithoutCities;
+            TicketsResponse response = await ticketsRepository.FetchTickets(request);
+            IEnumerable<FindCitiesParams> iataCityCodes = response.Data
+                .SelectMany(ticket => new string[] { ticket.Origin, ticket.Destination })
+                .ToHashSet()
+                .Select(iataCityCode => new FindCitiesParams() { IataCode = iataCityCode });
+            response.Cities = citiesRepository.FindCities(iataCityCodes);
+            IEnumerable<FindAirlinesParams> iataAirlinesCodes = response.Data
+                .Select(ticket => ticket.Airline)
+                .ToHashSet()
+                .Select(iataAirlineCode => new FindAirlinesParams() { IataCode = iataAirlineCode });
+            response.Airlines = airlinesRepository.FindAirlines(iataAirlinesCodes);
+            return response;
         }
     }
 }

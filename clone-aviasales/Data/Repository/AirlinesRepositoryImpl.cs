@@ -13,10 +13,10 @@ namespace clone_aviasales.Data.Repository
         {
             this.cacheDataSource = cacheDataSource;
         }
-        //todo: change ienuramble<string> to ienurable<citiesforfindparams>
-        public IDictionary<string, Airline> FindAirlines(ISet<string> airlinesForFind)
+
+        public IDictionary<string, Airline> FindAirlines(IEnumerable<FindAirlinesParams> airlinesParams)
         {
-            return cacheDataSource.FindAirlines(airlinesForFind);
+            return cacheDataSource.FindAirlines(airlinesParams);
         }
     }
 }

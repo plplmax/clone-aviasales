@@ -1,6 +1,7 @@
 ﻿using clone_aviasales.Domain.Model;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 
 namespace clone_aviasales.Data.Source
@@ -21,19 +22,19 @@ namespace clone_aviasales.Data.Source
             airlines = JsonDocument.Parse(allAirlines);
         }
 
-        public IDictionary<string, Airline> FindAirlines(ISet<string> airlinesForFind)
+        public IDictionary<string, Airline> FindAirlines(IEnumerable<FindAirlinesParams> airlinesParams)
         {
-            var test = airlines.RootElement.EnumerateArray();
-            IDictionary<string, Airline> temp = new Dictionary<string, Airline>(airlinesForFind.Count);
+            var airlinesArray = airlines.RootElement.EnumerateArray();
+            IDictionary<string, Airline> result = new Dictionary<string, Airline>(airlinesParams.Count());
 
-            foreach (var t in test)
+            foreach (var airline in airlinesArray)
             {
-                string code = t.GetProperty("code").GetString();
-                if (airlinesForFind.Contains(code)) temp.Add(code, new Airline() { Name = t.GetProperty("name_translations").GetProperty("en").GetString() });
-                if (temp.Count == airlinesForFind.Count) break;
+                string iataCode = airline.GetProperty("code").GetString();
+                if (airlinesParams.FirstOrDefault(airline => airline.IataCode == iataCode) != null) result.Add(iataCode, new Airline() { Name = airline.GetProperty("name_translations").GetProperty("en").GetString() });
+                if (result.Count == airlinesParams.Count()) break;
             }
 
-            return temp;
+            return result;
         }
     }
 }

@@ -5,6 +5,6 @@ namespace clone_aviasales.Domain.Repository
 {
     public interface IAirlinesRepository
     {
-        public IDictionary<string, Airline> FindAirlines(ISet<string> airlinesForFind);
+        public IDictionary<string, Airline> FindAirlines(IEnumerable<FindAirlinesParams> airlinesParams);
     }
 }

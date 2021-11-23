@@ -1,6 +1,7 @@
 ﻿using clone_aviasales.Domain.Model;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 
 namespace clone_aviasales.Data.Source
@@ -21,19 +22,19 @@ namespace clone_aviasales.Data.Source
             cities = JsonDocument.Parse(allCities);
         }
 
-        public IDictionary<string, City> FindCities(ISet<string> citiesForFind)
+        public IDictionary<string, City> FindCities(IEnumerable<FindCitiesParams> citiesParams)
         {
-            var test = cities.RootElement.EnumerateArray();
-            IDictionary<string, City> temp = new Dictionary<string, City>(citiesForFind.Count);
+            var citiesArray = cities.RootElement.EnumerateArray();
+            IDictionary<string, City> result = new Dictionary<string, City>(citiesParams.Count());
 
-            foreach (var t in test)
+            foreach (var cityItem in citiesArray)
             {
-                string code = t.GetProperty("code").GetString();
-                if (citiesForFind.Contains(code)) temp.Add(code, new City() { Name = t.GetProperty("name_translations").GetProperty("ru").GetString(), Timezone = t.GetProperty("time_zone").GetString() });
-                if (temp.Count == citiesForFind.Count) break;
+                string code = cityItem.GetProperty("code").GetString();
+                if (citiesParams.FirstOrDefault(city => city.IataCode == code) != null) result.Add(code, new City() { Name = cityItem.GetProperty("name_translations").GetProperty("ru").GetString(), Timezone = cityItem.GetProperty("time_zone").GetString() });
+                if (result.Count == citiesParams.Count()) break;
             }
 
-            return temp;
+            return result;
         }
 
 
