@@ -7,8 +7,12 @@ body {
 	background: #0c73fe;
 }
 
-.main, .not-found {
+.main, .information-card {
 	padding: 50px;
+}
+
+.strange-filters-card {
+	padding: 0px 50px;
 }
 
 .rounded-15 {
@@ -24,13 +28,21 @@ body {
 	flex-basis: 100%;
 }
 
-.not-found .card {
+.information-card .card {
 	padding: 80px 95px;
 }
 
-.not-found__image {
+.information-card__image {
 	background-image: url(https://www.aviasales.by/helios-assets/good-news-64ddf089577281b71628..svg);
 	background-repeat: no-repeat;
 	width: 100px;
 	height: 100px;
+}
+
+.information-card__image.--bad {
+	background-image: url(https://www.aviasales.by/helios-assets/bad-news-1923a4eacdb519a19797..svg);
+}
+
+.loader {
+	margin-top: 10rem;
 }

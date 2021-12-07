@@ -2,6 +2,7 @@ using clone_aviasales.Data.Repository;
 using clone_aviasales.Data.Source;
 using clone_aviasales.Domain.Interactors;
 using clone_aviasales.Domain.Repository;
+using clone_aviasales.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,8 +24,9 @@ namespace clone_aviasales
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages().AddRazorRuntimeCompilation();
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(options => options.ModelBinderProviders.Insert(0, new CustomTicketsFiltersModelBinderProvider()));
             services.AddTransient<FetchTicketsInteractor>();
+            services.AddTransient<FilterTicketsInteractor>();
             services.AddSingleton<ITicketsRepository, TicketsRepositoryImpl>();
             services.AddSingleton<ICitiesRepository, CitiesRepositoryImpl>();
             services.AddSingleton<IAirlinesRepository, AirlinesRepositoryImpl>();

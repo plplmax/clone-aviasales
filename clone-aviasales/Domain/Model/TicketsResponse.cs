@@ -8,7 +8,7 @@ namespace clone_aviasales.Domain.Model
         [JsonPropertyName("success")]
         public bool Success { get; set; }
         [JsonPropertyName("data")]
-        public List<DataResponse> Data { get; set; }
+        public List<DataResponse> Data { get; set; } = new();
         [JsonPropertyName("cities")]
         public IDictionary<string, City> Cities { get; set; }
         [JsonPropertyName("airlines")]

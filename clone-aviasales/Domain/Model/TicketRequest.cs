@@ -23,5 +23,9 @@ namespace clone_aviasales.Domain.Model
         [JsonPropertyName("currency")]
         [BindProperty(Name = "currency", SupportsGet = true)]
         public string Currency { get; set; }
+        [JsonIgnore]
+        [BindingBehavior(BindingBehavior.Optional)]
+        [BindProperty(Name = "filters", SupportsGet = true)]
+        public TicketsFilters Filters { get; set; }
     }
 }

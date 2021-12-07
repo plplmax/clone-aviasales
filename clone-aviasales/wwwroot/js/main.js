@@ -5,20 +5,52 @@
     const locale = 'ru-RU';
     const purchaseUrl = 'https://aviasales.ru';
     const imagesUrl = 'https://pics.avs.io/al_square/36/36/';
+    const mobileImagesUrl = 'https://mpics.avs.io/al_square/48/48/';
     const minutesPerDay = 60 * 24;
     const minutesPerHour = 60;
     const millisecondsPerMinute = 60 * 1000;
     const fetchTimeFormatOptions = (timezone) => ({ hour: '2-digit', minute: '2-digit', timeZone: timezone });
     const fetchDateFormatOptions = (timezone) => ({ weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: timezone });
+    // add new on submit and checkboxes for filters, may be
+    // hide passengers input
+    $('#duration-range').on('change', function () {
+        $('input[name="filters[duration]"]').val($(this).val());
+        $('input[name="filters[duration]"').val() == $(this).attr('max') ? $('input[name="filters[duration]"').prop('checked', false) : $('input[name="filters[duration]"').prop('checked', true);;
+        $('#filters-form').submit();
+        console.log("change");
+    });
+
+    $('#duration-range').on('input', function () {
+        $('.duration-filter span').text("До " + $(this).val() + "ч");
+        console.log("input");
+    });
 
     $('#search-form').submit(function (event) {
         event.preventDefault();
 
         if (isFormValid()) {
             let formData = $(this).serialize();
-
             fetchTickets(formData);
         }
+    });
+
+    $('#filters-form').submit(function (event) {
+        event.preventDefault();
+
+        if (isFormValid()) {
+            let formData = $('#search-form').serialize();
+            let filterData = $(this).serialize();
+            formData += "&" + filterData;
+            fetchTicketsWithFilters(formData);
+        }
+    });
+
+    $('input[name="filters[transfers_count]"]').on('click', function () {
+        $('#filters-form').submit();
+    });
+
+    $('body').on('click', 'input[name = "filters[airlines]"]', function () {
+        $('#filters-form').submit();
     });
 
     function isFormValid() {
@@ -41,29 +73,75 @@
             url: 'api/ticket',
             dataType: 'json',
             data: formData,
-            success: function (data) {
-                handleResponse(data);
-            },
-            error: function (error) {
+            success: (data) => handleResponse(data),
+            error: (error) => {
                 hideTickets();
                 clearTickets();
+                hideWelcomeCard();
                 showNotFoundError();
-            }
+            },
+            beforeSend: () => {
+                $('.loader').show();
+                hideWelcomeCard();
+                hideNotFoundError();
+                hideTickets();
+                hideFlightFilters();
+            },
+            complete: () => $('.loader').hide()
         });
     }
 
+    function fetchTicketsWithFilters(formData) {
+        $.ajax({
+            type: 'GET',
+            url: 'api/ticket',
+            dataType: 'json',
+            data: formData,
+            success: (data) => handleResponseWithFilters(data),
+            error: (error) => {
+                hideTickets();
+                clearTickets();
+                showStrangeFiltersCard();
+            },
+            beforeSend: () => $('.flight').toggleClass('show'),
+            complete: () => $('.flight').toggleClass('show')
+        });
+    }
+
+
     function handleResponse(response) {
         clearTickets();
+        clearAirlines();
 
         if (isResponseValid(response)) {
             hideNotFoundError();
+            hideWelcomeCard();
+            showFlightFilters();
+            showTickets();
+            loadTickets(response);
+            loadAirlines(response);
+            updateDurationRange(response);
+            return;
+        }
+
+        hideTickets();
+        hideFlightFilters();
+        hideWelcomeCard();
+        showNotFoundError();
+    }
+
+    function handleResponseWithFilters(response) {
+        clearTickets();
+
+        if (isResponseValid(response)) {
+            hideStrangeFiltersCard();
             showTickets();
             loadTickets(response);
             return;
         }
 
         hideTickets();
-        showNotFoundError();
+        showStrangeFiltersCard();
     }
 
     function hideTickets() {
@@ -78,12 +156,40 @@
         $('.flight').empty();
     }
 
+    function clearAirlines() {
+        $('.airlines-filter').empty();
+    }
+
     function showNotFoundError() {
-        $('.not-found').css('display', 'block');
+        $('.not-found-card').css('display', 'block');
     }
 
     function hideNotFoundError() {
-        $('.not-found').css('display', 'none');
+        $('.not-found-card').css('display', 'none');
+    }
+
+    function hideWelcomeCard() {
+        $('.welcome-card').css('display', 'none');
+    }
+
+    function showWelcomeCard() {
+        $('.welcome-card').css('display', 'block');
+    }
+
+    function showFlightFilters() {
+        $('.flight-filters').css('display', 'block');
+    }
+
+    function hideFlightFilters() {
+        $('.flight-filters').css('display', 'none');
+    }
+
+    function hideStrangeFiltersCard() {
+        $('.strange-filters-card').css('display', 'none');
+    }
+
+    function showStrangeFiltersCard() {
+        $('.strange-filters-card').css('display', 'block');
     }
 
     function convertMinutesToDuration(flightDuration) {
@@ -98,8 +204,11 @@
         let tickets = response.data;
         let cities = response.cities;
         let airlines = response.airlines;
+        let maxDuration = tickets[0].duration;
 
         for (ticket of tickets) {
+            if (maxDuration < ticket.duration) maxDuration = ticket.duration;
+
             let flightDurationInMinutes = Number(ticket.duration);
             let flightDuration = convertMinutesToDuration(flightDurationInMinutes);
 
@@ -170,5 +279,34 @@
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
+    }
+
+    function loadAirlines(response) {
+        let airlines = response.airlines;
+        for (airline in airlines) {
+            let html = '<label class="list-group-item border-0 d-flex align-items-center">' +
+                '<img src="' + mobileImagesUrl + airline + '.png" class="aero-filter-img me-2 rounded-pill">' +
+                '<span>' + airlines[airline].name + '</span>' +
+                '<input name="filters[airlines]" class="form-check-input me-1 mt-0 position-absolute end-0" type="checkbox" value="' + airline + '">' +
+                '</label>';
+            $('.airlines-filter').append(html);
+        }
+    }
+
+    function updateDurationRange(response) {
+        let maxDuration = fetchMaxDuration(response.data);
+        let durationInHours = Math.ceil(maxDuration / 60);
+        $('.duration-filter span').text("До " + durationInHours + "ч");
+        $('#duration-range').attr('max', durationInHours);
+        $('#duration-range').val(durationInHours);
+    }
+
+    function fetchMaxDuration(tickets) {
+        let maxDuration = tickets[0].duration;
+        for (ticket of tickets) {
+            if (maxDuration < ticket.duration) maxDuration = ticket.duration;
+        }
+
+        return maxDuration;
     }
 })
