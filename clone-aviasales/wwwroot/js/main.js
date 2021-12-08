@@ -1,57 +1,32 @@
 ﻿$(function () {
     let originIata = $('input[name = origin_iata]'),
         destinationIata = $('input[name = destination_iata]'),
-        departDate = $('input[name = depart_date]');
+        departDate = $('input[name = depart_date]'),
+        durationRange = $('#duration-range'),
+        durationRangeLabel = $('.duration-filter span'),
+        hiddenDurationInput = $('input[name="filters[duration]"]'),
+        transfersCountInput = $('input[name="filters[transfers_count]"]'),
+        searchForm = $('#search-form'),
+        filtersForm = $('#filters-form');
     const locale = 'ru-RU';
     const purchaseUrl = 'https://aviasales.ru';
     const imagesUrl = 'https://pics.avs.io/al_square/36/36/';
     const mobileImagesUrl = 'https://mpics.avs.io/al_square/48/48/';
-    const minutesPerDay = 60 * 24;
     const minutesPerHour = 60;
-    const millisecondsPerMinute = 60 * 1000;
-    const fetchTimeFormatOptions = (timezone) => ({ hour: '2-digit', minute: '2-digit', timeZone: timezone });
-    const fetchDateFormatOptions = (timezone) => ({ weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: timezone });
-    // add new on submit and checkboxes for filters, may be
+    const minutesPerDay = 1440;
+    const millisecondsPerMinute = 60000;
     // hide passengers input
-    $('#duration-range').on('change', function () {
-        $('input[name="filters[duration]"]').val($(this).val());
-        $('input[name="filters[duration]"').val() == $(this).attr('max') ? $('input[name="filters[duration]"').prop('checked', false) : $('input[name="filters[duration]"').prop('checked', true);;
-        $('#filters-form').submit();
-        console.log("change");
+    durationRange.on('change', () => {
+        updateHiddenDurationInputValue();
+        updateHiddenDurationInputState();
+        submitFiltersForm();
     });
 
-    $('#duration-range').on('input', function () {
-        $('.duration-filter span').text("До " + $(this).val() + "ч");
-        console.log("input");
-    });
-
-    $('#search-form').submit(function (event) {
-        event.preventDefault();
-
-        if (isFormValid()) {
-            let formData = $(this).serialize();
-            fetchTickets(formData);
-        }
-    });
-
-    $('#filters-form').submit(function (event) {
-        event.preventDefault();
-
-        if (isFormValid()) {
-            let formData = $('#search-form').serialize();
-            let filterData = $(this).serialize();
-            formData += "&" + filterData;
-            fetchTicketsWithFilters(formData);
-        }
-    });
-
-    $('input[name="filters[transfers_count]"]').on('click', function () {
-        $('#filters-form').submit();
-    });
-
-    $('body').on('click', 'input[name = "filters[airlines]"]', function () {
-        $('#filters-form').submit();
-    });
+    durationRange.on('input', updateDurationLabelText);
+    searchForm.submit((event) => submitFormCallback(event, searchForm));
+    filtersForm.submit((event) => submitFormCallback(event, filtersForm));
+    transfersCountInput.on('click', submitFiltersForm);
+    $('body').on('click', 'input[name = "filters[airlines]"]', submitFiltersForm);
 
     function isFormValid() {
         return originIata.val() && destinationIata.val() && departDate.val();
@@ -65,6 +40,50 @@
             response.airlines.length != 0 &&
             response.cities != null &&
             response.cities.length != 0;
+    }
+
+    function fetchTimeFormatOptions(timezone) {
+        return ({ hour: '2-digit', minute: '2-digit', timeZone: timezone });
+    }
+
+    function fetchDateFormatOptions(timezone) {
+        return ({ weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: timezone });
+    }
+
+    function includeDurationInQuery(bool) {
+        hiddenDurationInput.prop('checked', bool);
+    }
+
+    function updateDurationLabelText() {
+        durationRangeLabel.text("До " + durationRange.val() + "ч");
+    }
+
+    function updateHiddenDurationInputValue() {
+        let selectedRangeValue = durationRange.val();
+        hiddenDurationInput.val(selectedRangeValue);
+    }
+
+    function updateHiddenDurationInputState() {
+        let include = durationRange.val() != durationRange.attr('max');
+        includeDurationInQuery(include);
+    }
+
+    function submitFiltersForm() {
+        filtersForm.submit();
+    }
+
+    function submitFormCallback(event, source) {
+        event.preventDefault();
+        if (isFormValid()) {
+            let formData = searchForm.serialize();
+            if (source == searchForm) {
+                fetchTickets(formData);
+            } else if (source == filtersForm) {
+                let filterData = filtersForm.serialize();
+                formData += "&" + filterData;
+                fetchTicketsWithFilters(formData);
+            }
+        }
     }
 
     function fetchTickets(formData) {
@@ -296,9 +315,9 @@
     function updateDurationRange(response) {
         let maxDuration = fetchMaxDuration(response.data);
         let durationInHours = Math.ceil(maxDuration / 60);
-        $('.duration-filter span').text("До " + durationInHours + "ч");
-        $('#duration-range').attr('max', durationInHours);
-        $('#duration-range').val(durationInHours);
+        durationRange.attr('max', durationInHours);
+        durationRange.val(durationInHours);
+        updateDurationLabelText();
     }
 
     function fetchMaxDuration(tickets) {
