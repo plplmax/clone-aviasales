@@ -46,3 +46,8 @@ body {
 .loader {
 	margin-top: 10rem;
 }
+
+.aero-filter-img {
+	width: 24px;
+	height: 24px;
+}
