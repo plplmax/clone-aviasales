@@ -11,10 +11,5 @@ namespace clone_aviasales.Pages
         {
             _logger = logger;
         }
-
-        public void OnGet()
-        {
-
-        }
     }
 }
