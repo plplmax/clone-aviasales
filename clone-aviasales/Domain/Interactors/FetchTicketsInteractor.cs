@@ -22,15 +22,15 @@ namespace clone_aviasales.Domain.Interactors
         public async Task<TicketsResponse> Execute(TicketRequest request)
         {
             TicketsResponse response = await ticketsRepository.FetchTickets(request);
-            IEnumerable<FindCitiesParams> iataCityCodes = response.Data
+            IEnumerable<FindParams> iataCityCodes = response.Data
                 .SelectMany(ticket => new string[] { ticket.Origin, ticket.Destination })
                 .ToHashSet()
-                .Select(iataCityCode => new FindCitiesParams() { IataCode = iataCityCode });
+                .Select(iataCityCode => new FindParams() { IataCode = iataCityCode });
             response.Cities = citiesRepository.FindCities(iataCityCodes);
-            IEnumerable<FindAirlinesParams> iataAirlinesCodes = response.Data
+            IEnumerable<FindParams> iataAirlinesCodes = response.Data
                 .Select(ticket => ticket.Airline)
                 .ToHashSet()
-                .Select(iataAirlineCode => new FindAirlinesParams() { IataCode = iataAirlineCode });
+                .Select(iataAirlineCode => new FindParams() { IataCode = iataAirlineCode });
             response.Airlines = airlinesRepository.FindAirlines(iataAirlinesCodes);
             return response;
         }

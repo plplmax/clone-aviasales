@@ -1,4 +1,5 @@
 ﻿using clone_aviasales.Data.Source;
+using clone_aviasales.Domain.Core;
 using clone_aviasales.Domain.Model;
 using clone_aviasales.Domain.Repository;
 using System.Collections.Generic;
@@ -14,9 +15,9 @@ namespace clone_aviasales.Data.Repository
             this.cacheDataSource = cacheDataSource;
         }
 
-        public IDictionary<string, City> FindCities(IEnumerable<FindCitiesParams> citiesParams)
+        public IDictionary<string, City> FindCities(IEnumerable<FindParams> citiesParams)
         {
-            return cacheDataSource.FindCities(citiesParams);
+            return cacheDataSource.Find(citiesParams, JsonElementExtension.ToCity);
         }
     }
 }

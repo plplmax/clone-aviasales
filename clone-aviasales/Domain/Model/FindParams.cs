@@ -1,6 +1,6 @@
 ﻿namespace clone_aviasales.Domain.Model
 {
-    public class FindCitiesParams
+    public class FindParams
     {
         public string IataCode { get; set; }
     }
