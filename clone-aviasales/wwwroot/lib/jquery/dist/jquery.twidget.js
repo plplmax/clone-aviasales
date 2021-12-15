@@ -912,7 +912,7 @@
             '                        <!-- oneway flag -->'+
             '                        <input type="hidden" name="oneway" disabled value="0">'+
             '                        <!-- flight passengers -->'+
-            '                        <li class="twidget-passengers">'+
+            '                        <li class="twidget-passengers" style="visibility: hidden;">'+
             '                            <label for="twidget-passengers-detail">'+_this.settings.localization.avia_passengers_select_caption+'</label>'+
             '                            <div class="twidget-passengers-detail">'+
             '                                <div class="twidget-pas-no"><span id="twidget-pas">1</span> <span class="twidget-pas-caption">'+_this.settings.localization.avia_passengers_caption_1+'</span></div>'+
