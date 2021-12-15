@@ -925,13 +925,13 @@
             '                                        <li>'+
             '                                            <div class="twidget-cell twidget-age-name">' + _this.settings.localization.avia_passengers_select_adults + '</div>'+
             '                                            <div class="twidget-cell twidget-age-select">'+
-            '                                                <span class="twidget-dec twidget-q-btn" data-age="adults">-</span><span class="twidget-num"><input type="text" name="adults" value="1"></span><span class="twidget-inc twidget-q-btn" data-age="adults">+</span>'+
+            '                                                <span class="twidget-dec twidget-q-btn" data-age="adults">-</span><span class="twidget-num"><input type="text" name="adults" value="1" disabled></span><span class="twidget-inc twidget-q-btn" data-age="adults">+</span>'+
             '                                            </div>'+
             '                                        </li>'+
             '                                        <li>'+
             '                                            <div class="twidget-cell twidget-age-name">' + _this.settings.localization.avia_passengers_select_children + '</div>'+
             '                                            <div class="twidget-cell twidget-age-select">'+
-            '                                                <span class="twidget-dec twidget-q-btn" data-age="children">-</span><span class="twidget-num"><input type="text" name="children" value="0"></span><span class="twidget-inc twidget-q-btn" data-age="children">+</span>'+
+            '                                                <span class="twidget-dec twidget-q-btn" data-age="children">-</span><span class="twidget-num"><input type="text" name="children" value="0" disabled></span><span class="twidget-inc twidget-q-btn" data-age="children">+</span>'+
             '                                            </div>'+
             '                                        </li>'+
             '                                        <li>'+
@@ -945,7 +945,7 @@
             '                                        <div class="twidget-pass-check">'+
             '                                            <input type="checkbox" class="twidget-pass-class">'+
             '                                            <label>' + _this.settings.localization.avia_passengers_business_class_checkbox + '</label>'+
-            '                                            <input type="hidden" name="trip_class" value="0">'+
+            '                                            <input type="hidden" name="trip_class" value="0" disabled>'+
             '                                        </div>'+
             '                                    </div>'+
             '                                    <ul class="twidget-age-group">'+
@@ -960,7 +960,7 @@
             '                        <!-- partner marker -->'+
             '                        <input type="hidden" name="marker" value="11111">'+
             '                        <!-- with_request flag -->'+
-            '                        <input type="hidden" name="with_request" value="1">' +
+            '                        <input type="hidden" name="with_request" value="1" disabled>' +
             '                        <!-- currency -->' +
             '                        <input type="hidden" name="currency" value="byn">' +
             '                        <!-- submit button -->'+
