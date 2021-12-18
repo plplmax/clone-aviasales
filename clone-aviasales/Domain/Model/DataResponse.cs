@@ -19,7 +19,7 @@ namespace clone_aviasales.Domain.Model
         [JsonPropertyName("airline")]
         public string Airline { get; set; }
         [JsonPropertyName("price")]
-        public short Price { get; set; }
+        public int Price { get; set; }
         [JsonPropertyName("transfers")]
         public byte Transfers { get; set; }
         [JsonPropertyName("return_transfers")]
