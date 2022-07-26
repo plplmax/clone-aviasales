@@ -40,8 +40,5 @@ Go to https://localhost:5001
 #
 ![demo-2](https://user-images.githubusercontent.com/50287455/147111427-cb6a3b58-4473-4765-be2c-5cd1a48e7f35.gif)
 
-## Contributing
-If you want to make small changes, please create a pull request. Major changes will be rejected.
-
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
